@@ -13,30 +13,30 @@ const GAS_LIMIT = {
   },
 }
 
-export const getMasterChefAddress = (sushi) => {
-  return sushi && sushi.masterChefAddress
+export const getMasterChefAddress = (UBQT) => {
+  return UBQT && UBQT.masterChefAddress
 }
-export const getSushiAddress = (sushi) => {
-  return sushi && sushi.sushiAddress
+export const getUBQTAddress = (UBQT) => {
+  return UBQT && UBQT.ubqtAddress
 }
-export const getWethContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.weth
-}
-
-export const getMasterChefContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.masterChef
-}
-export const getSushiContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.sushi
+export const getWethContract = (UBQT) => {
+  return UBQT && UBQT.contracts && UBQT.contracts.weth
 }
 
-export const getXSushiStakingContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.xSushiStaking
+export const getMasterChefContract = (UBQT) => {
+  return UBQT && UBQT.contracts && UBQT.contracts.masterChef
+}
+export const getUBQTContract = (UBQT) => {
+  return UBQT && UBQT.contracts && UBQT.contracts.sushi
 }
 
-export const getFarms = (sushi) => {
-  return sushi
-    ? sushi.contracts.pools.map(
+export const getXUBQTStakingContract = (UBQT) => {
+  return UBQT && UBQT.contracts && UBQT.contracts.xSushiStaking
+}
+
+export const getFarms = (UBQT) => {
+  return UBQT
+    ? UBQT.contracts.pools.map(
         ({
           pid,
           name,
@@ -58,7 +58,7 @@ export const getFarms = (sushi) => {
           tokenSymbol,
           tokenContract,
           earnToken: 'sushi',
-          earnTokenAddress: sushi.contracts.sushi.options.address,
+          earnTokenAddress: ubqt.contracts.sushi.options.address,
           icon,
         }),
       )
@@ -74,7 +74,7 @@ export const getPoolWeight = async (masterChefContract, pid) => {
 }
 
 export const getEarned = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods.pendingSushi(pid, account).call()
+  return masterChefContract.methods.pendingUBQT(pid, account).call()
 }
 
 export const getTotalLPWethValue = async (
