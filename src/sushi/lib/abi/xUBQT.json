@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "contract IERC20",
-        "name": "_sushi",
+        "name": "_UBQT",
         "type": "address"
       }
     ],
