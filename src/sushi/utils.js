@@ -57,28 +57,28 @@ export const getFarms = (UBQT) => {
           tokenAddress,
           tokenSymbol,
           tokenContract,
-          earnToken: 'sushi',
-          earnTokenAddress: ubqt.contracts.sushi.options.address,
+          earnToken: 'ubqt',
+          earnTokenAddress: ubqt.contracts.ubqt.options.address,
           icon,
         }),
       )
     : []
 }
 
-export const getPoolWeight = async (masterChefContract, pid) => {
-  const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
-  const totalAllocPoint = await masterChefContract.methods
+export const getPoolWeight = async (MasterDistributorContract, pid) => {
+  const { allocPoint } = await MasterDistributorContract.methods.poolInfo(pid).call()
+  const totalAllocPoint = await MasterDistributorContract.methods
     .totalAllocPoint()
     .call()
   return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
 }
 
-export const getEarned = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods.pendingUBQT(pid, account).call()
+export const getEarned = async (MasterDistributorContract, pid, account) => {
+  return MasterDistributorContract.methods.pendingUBQT(pid, account).call()
 }
 
 export const getTotalLPWethValue = async (
-  masterChefContract,
+  MasterDistributorContract,
   wethContract,
   lpContract,
   tokenContract,
@@ -91,7 +91,7 @@ export const getTotalLPWethValue = async (
   const tokenDecimals = await tokenContract.methods.decimals().call()
   // Get the share of lpContract that masterChefContract owns
   const balance = await lpContract.methods
-    .balanceOf(masterChefContract.options.address)
+    .balanceOf(MasterDistributorContract.options.address)
     .call()
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
@@ -120,9 +120,9 @@ export const getTotalLPWethValue = async (
   }
 }
 
-export const approve = async (lpContract, masterChefContract, account) => {
+export const approve = async (lpContract, MasterDistributorContract, account) => {
   return lpContract.methods
-    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
+    .approve(MasterDistributorContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
 }
 
@@ -132,16 +132,16 @@ export const approveAddress = async (lpContract, address, account) => {
       .send({ from: account })
 }
 
-export const getSushiSupply = async (sushi) => {
-  return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
+export const getUBQTSupply = async (UBQT) => {
+  return new BigNumber(await UBQT.contracts.ubqt.methods.totalSupply().call())
 }
 
-export const getXSushiSupply = async (sushi) => {
-  return new BigNumber(await sushi.contracts.xSushiStaking.methods.totalSupply().call())
+export const getXUBQTSupply = async (UBQT) => {
+  return new BigNumber(await UBQT.contracts.xUBQTStaking.methods.totalSupply().call())
 }
 
-export const stake = async (masterChefContract, pid, amount, account) => {
-  return masterChefContract.methods
+export const stake = async (MasterDistributorContract, pid, amount, account) => {
+  return MasterDistributorContract.methods
     .deposit(
       pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -153,8 +153,8 @@ export const stake = async (masterChefContract, pid, amount, account) => {
     })
 }
 
-export const unstake = async (masterChefContract, pid, amount, account) => {
-  return masterChefContract.methods
+export const unstake = async (MasterDistributorContract, pid, amount, account) => {
+  return MasterDistributoContract.methods
     .withdraw(
       pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -165,8 +165,8 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
       return tx.transactionHash
     })
 }
-export const harvest = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods
+export const harvest = async (MasterDistributorContract, pid, account) => {
+  return MasterDistributorContract.methods
     .deposit(pid, '0')
     .send({ from: account })
     .on('transactionHash', (tx) => {
@@ -175,9 +175,9 @@ export const harvest = async (masterChefContract, pid, account) => {
     })
 }
 
-export const getStaked = async (masterChefContract, pid, account) => {
+export const getStaked = async (MasterDistributorContract, pid, account) => {
   try {
-    const { amount } = await masterChefContract.methods
+    const { amount } = await MasterDistributorContract.methods
       .userInfo(pid, account)
       .call()
     return new BigNumber(amount)
@@ -186,10 +186,10 @@ export const getStaked = async (masterChefContract, pid, account) => {
   }
 }
 
-export const redeem = async (masterChefContract, account) => {
+export const redeem = async (MasterDistributorContract, account) => {
   let now = new Date().getTime() / 1000
   if (now >= 1597172400) {
-    return masterChefContract.methods
+    return MasterDistributorContract.methods
       .exit()
       .send({ from: account })
       .on('transactionHash', (tx) => {
