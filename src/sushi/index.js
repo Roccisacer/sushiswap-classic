@@ -6,5 +6,5 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
-export { Sushi } from './UBQT.js'
+export { UBQT } from './UBQT.js'
 export { Web3, BigNumber }
