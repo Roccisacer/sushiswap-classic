@@ -24,14 +24,14 @@ export const getWethContract = (UBQT) => {
 }
 
 export const getMasterChefContract = (UBQT) => {
-  return UBQT && UBQT.contracts && UBQT.contracts.masterChef
+  return UBQT && UBQT.contracts && UBQT.contracts.Masterdistributor
 }
 export const getUBQTContract = (UBQT) => {
-  return UBQT && UBQT.contracts && UBQT.contracts.sushi
+  return UBQT && UBQT.contracts && UBQT.contracts.UBQT
 }
 
 export const getXUBQTStakingContract = (UBQT) => {
-  return UBQT && UBQT.contracts && UBQT.contracts.xSushiStaking
+  return UBQT && UBQT.contracts && UBQT.contracts.xUBQTStaking
 }
 
 export const getFarms = (UBQT) => {
