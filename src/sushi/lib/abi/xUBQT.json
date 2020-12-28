@@ -229,7 +229,7 @@
   },
   {
     "inputs": [],
-    "name": "sushi",
+    "name": "UBQT",
     "outputs": [
       {
         "internalType": "contract IERC20",
